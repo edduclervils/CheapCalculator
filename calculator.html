@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+    
+    <input class="input" type="text" placeholder="number" oninput="setValue(event)">
+    <button id="+" onclick="operation(event)">+</button>
+    <button id="-" onclick="operation(event)">-</button>
+    <button id="*" onclick="operation(event)">*</button>
+    <button id="/" onclick="operation(event)">/</button>
+    <button id="=" onclick="calcValues(event)">=</button>
+    <div class="screen" id="screen"></div>
+
+    <h3>Calculator History</h3>
+    <ul id="calcHistory">
+    </ul>
+</body>
+<script>
+    let screenValue = document.getElementById("screen");
+    let inputValue = "";
+    let currentOp = screenValue.innerHTML;
+
+    function setValue(event = new Event){
+        inputValue = event.target.value;
+    }
+
+    function operation(event = new Event()){
+        
+        let operator = currentOp[currentOp.length - 1];
+
+        currentOp += inputValue + event.target.innerHTML;
+
+        if (operator === "+" || operator === "-" || operator === "*" || operator === "/") {
+            let newOp = currentOp.substring(0, currentOp.length - 1) + event.target.innerHTML;
+            screenValue.innerHTML = newOp;
+        } 
+        else if (currentOp.length == 0) {
+            console.log("enter a number first");
+        } 
+        else {
+            screenValue.innerHTML = inputValue + event.target.innerHTML;
+        }
+    }
+
+    function calcValues(event = new Event()){
+        currentOp+=inputValue;
+        let result = eval(currentOp);
+        const li = document.createElement("li");
+        li.innerText =currentOp+"="+ result;
+        calcHistory.appendChild(li);
+
+        screenValue.innerHTML = result;
+
+
+        
+        currentOp = '';
+    }
+
+
+</script>
+<style>
+    .screen{
+        border: 1px solid #ddd;
+        border-radius: 1px;
+        height: 30px;
+        padding-right: 5px;
+        padding-top: 3px;
+        text-align: right;
+        margin-right: 3px;
+        font-size: 1.4em;
+        overflow-x: auto;
+        transition: all .2s ease-in-out;
+    }
+</style>
+</html>
